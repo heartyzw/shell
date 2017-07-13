@@ -1,4 +1,0 @@
-This is the header line
-This is the first data line
-This is the second data line
-This is the last line
