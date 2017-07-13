@@ -1,0 +1,41 @@
+使用ifconfig取出网卡eth0的ip地址
+
+方法1：sed 命令
+yzw@localhost:~$ ifconfig eth0 | sed -n "2p" | sed 's/^.*addr://g' | sed 's/ B.*$//g'
+192.168.23.87
+yzw@localhost:~$ ifconfig eth0 | sed -n "2p" | sed 's#^.*addr:##g' | sed 's# B.*$##g'
+192.168.23.87
+yzw@localhost:~$ ifconfig eth0 | sed -n "2p" | sed 's/^.*addr://g' | sed 's# B.*$##g'
+192.168.23.87
+
+方法2：cut 命令
+yzw@localhost:~$ ifconfig eth0 | grep "inet addr"
+inet addr:192.168.23.87  Bcast:192.168.23.255  Mask:255.255.255.0
+yzw@localhost:~$ ifconfig eth0 | grep "inet addr"  | cut -d ":" -f2
+192.168.23.87  Bcast
+yzw@localhost:~$ ifconfig eth0 | grep "inet addr"  | cut -d ":" -f2 | cut -d " " -f 1
+192.168.23.87
+yzw@localhost:~$
+
+方法3：awk 命令
+yzw@localhost:~$ ifconfig eth0 | grep "inet addr"  | awk -F ":" '{print $2}' | awk '{print $1}'
+192.168.23.87
+
+方法4：awk同时多分隔符法
+yzw@localhost:~$ ifconfig eth0 | grep "inet addr"  | awk -F '[ :]' '{print $13}'
+192.168.23.87
+
+方法5：awk同时多分隔符法
+yzw@localhost:~$ ifconfig eth0 | awk -F '[ :]+' 'NR==2{print $4}'
+192.168.23.87
+yzw@localhost:~$ ifconfig eth0  | sed -n "2p" | awk -F '[ :]+' '{print $4}'
+192.168.23.87
+
+
+方法6：sed（正则）
+yzw@localhost:~$ ifconfig eth0 | sed -nr '2s#^.*dr:(.*) B.*$#\1#gp'
+192.168.23.87
+
+方法7：grep-perl正则方法
+yzw@localhost:~$ ifconfig eth0 | grep -Po '(?<=dr:)[0-9.]+'
+192.168.23.87
