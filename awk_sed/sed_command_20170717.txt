@@ -1,0 +1,42 @@
+如下文件内容，
+
+cat /tmp/passwd
+root:x:0: 0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+要求：
+
+1）删除文件每行的第二个字符
+
+2）把所有小写字母用括号（）括起来
+
+1）删除文件每行的第二个字符
+
+方法一：
+
+[root@OldboyEdu tmp]# sed 's#.##2' passwd
+odboyedu.com
+13456789
+odboy
+odgirl
+方法二：
+
+[root@OldboyEdu tmp]# sed -r 's#(.).(.*)#\1\2#g' passwd
+odboyedu.com
+13456789
+odboy
+odgirl
+2）把所有小写字母用括号（）括起来
+
+[root@OldboyEdu tmp]# sed 's#[a-z1-9]#(&)#g' passwd
+(o)(l)(d)(b)(o)(y)(e)(d)(u).(c)(o)(m)
+(1)(2)(3)(4)(5)(6)(7)(8)(9)
+(o)(l)(d)(b)(o)(y)
+(o)(l)(d)(g)(i)(r)(l)
+
+
+#文章转载自:http://lidao.blog.51cto.com/3388056/1936502
